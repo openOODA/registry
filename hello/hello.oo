@@ -1,0 +1,14 @@
+// # Vendor package hello
+//
+// Logline: File-backed payload that depends on world.
+//
+// Setup: Installed by ooda add from the local vendor.
+//
+// Beats:
+//   1. One function exists.
+//   2. Depends on world via the manifest.
+//   3. No network.
+
+pub fn hello_ok() -> Bool {
+    return true;
+}

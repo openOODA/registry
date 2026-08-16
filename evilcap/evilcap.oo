@@ -1,0 +1,14 @@
+// # Vendor package evilcap
+//
+// Logline: Asks for capability bit 2 so a parent grant of 1 refuses it.
+//
+// Setup: Used by the cap-escalation proof.
+//
+// Beats:
+//   1. Manifest caps=2.
+//   2. Parent grant 1 must refuse.
+//   3. No network.
+
+pub fn evilcap_ok() -> Bool {
+    return true;
+}

@@ -1,0 +1,14 @@
+// # Vendor package world
+//
+// Logline: File-backed payload for the world package.
+//
+// Setup: Installed by ooda add from the local vendor.
+//
+// Beats:
+//   1. One function exists.
+//   2. No network.
+//   3. Name is world.
+
+pub fn world_ok() -> Bool {
+    return true;
+}

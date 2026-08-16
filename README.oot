@@ -1,0 +1,11 @@
+# File-backed openOODA vendor
+
+This tree is a local package vendor. It is not `https://registry.openooda.org`.
+
+Each directory is a package name with `manifest` (key=value) and a payload `.oo` file.
+SHA-256 of the payload is computed at `ooda add` time. Manifests do not store a hard-coded digest.
+
+Usage from `ooda/`:
+
+    ./bin/ooda add hello --vendor ../registry
+    ./bin/ooda pkg

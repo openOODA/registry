@@ -1,0 +1,5 @@
+name=hello
+version=1.0.0
+deps=world@^1.0.0#1
+caps=1
+payload=hello.oo
