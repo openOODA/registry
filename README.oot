@@ -1,6 +1,6 @@
 # File-backed openOODA vendor
 
-This tree is the file-backed vendor. Static HTTPS may serve the same files at `https://registry.openooda.org`. The CLI still uses `--vendor` on disk. `index.sig` is local HMAC, not a public minisign root.
+This tree is the file-backed vendor. HTTPS serves the same files at `https://registry.openooda.org`. `index.minisig` is minisign of `index`. `index.sig` is leftover HMAC for local `--vendor`.
 
 Each directory is a package name with `manifest` (key=value) and a payload `.oo` file.
 `index` plus `index.sig` is the signed catalog. `yank` and `advisory` are local policy files.

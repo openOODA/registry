@@ -5,9 +5,9 @@ This is the file-backed vendor published over HTTPS.
 **Origin:** https://registry.openooda.org  
 **Repo:** https://github.com/openOODA/registry
 
-It is a static tree (`index`, `index.sig`, package dirs). It is not a write API, not crates.io, and not a live `ooda add --registry` client yet. The product CLI still requires `--vendor` on disk.
+It is a static tree (`index`, `index.minisig`, `registry.pub`, package dirs). It is not a write API and not crates.io.
 
-`index.sig` is the existing local HMAC catalog signature (`ooda-local-pm`). That is not a public trust root. Do not treat a GET of this host as “verified from the internet” until minisign (or better) replaces HMAC.
+`index.minisig` is minisign of `index` with `registry.pub`. `ooda add --registry` verifies that signature with the pubkey shipped in the CLI. `index.sig` is leftover HMAC for local `--vendor` only.
 
 ```
 ./bin/ooda add hello --vendor ../registry
