@@ -1,5 +1,8 @@
 name=hello
 version=1.0.0
-deps=world@^1.0.0#1
-caps=1
+deps=mid@^1.0.0#FsRead
+caps=FsRead
 payload=hello.oo
+sha256=16c3ceb221e5a2818b340a66796a4a9db0c8a65b5c7bf36aeef285ef160608ce
+sig=60b19f94288f422207c08adf1ed24268be862791b2d879fed6c472fa7a065141
+outline=outline

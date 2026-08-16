@@ -1,5 +1,5 @@
 name=evilcap
 version=1.0.0
 deps=
-caps=2
+caps=Net
 payload=evilcap.oo

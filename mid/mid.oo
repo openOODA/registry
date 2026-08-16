@@ -1,0 +1,14 @@
+// # Vendor package mid
+//
+// Logline: Middle package in the hello -> mid -> world chain.
+//
+// Setup: File-backed vendor payload.
+//
+// Beats:
+//   1. One function exists.
+//   2. Depends on world.
+//   3. No network.
+
+pub fn mid_ok() -> Bool {
+    return true;
+}

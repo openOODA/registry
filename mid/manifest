@@ -1,0 +1,8 @@
+name=mid
+version=1.0.0
+deps=world@^1.0.0#FsRead
+caps=FsRead
+payload=mid.oo
+sha256=006ee56e6f99f683f3a4398e9f64b2a9eb22356adb0436f711d9444b6abf6c07
+sig=42b9010f1b421d08b06438c66a4145bd2401369b5d6e2de2a1d4ebc051f3dd10
+outline=outline
