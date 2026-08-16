@@ -1,10 +1,10 @@
 # File-backed openOODA vendor
 
-This tree is a local package vendor. It is not `https://registry.openooda.org`.
+This tree is the file-backed vendor. Static HTTPS may serve the same files at `https://registry.openooda.org`. The CLI still uses `--vendor` on disk. `index.sig` is local HMAC, not a public minisign root.
 
 Each directory is a package name with `manifest` (key=value) and a payload `.oo` file.
 `index` plus `index.sig` is the signed catalog. `yank` and `advisory` are local policy files.
-This tree is still not `https://registry.openooda.org`.
+The product CLI does not fetch this host yet.
 
 Usage from `ooda/`:
 
