@@ -3,7 +3,8 @@
 This tree is a local package vendor. It is not `https://registry.openooda.org`.
 
 Each directory is a package name with `manifest` (key=value) and a payload `.oo` file.
-SHA-256 of the payload is computed at `ooda add` time. Manifests do not store a hard-coded digest.
+`index` plus `index.sig` is the signed catalog. `yank` and `advisory` are local policy files.
+This tree is still not `https://registry.openooda.org`.
 
 Usage from `ooda/`:
 

@@ -1,0 +1,14 @@
+// # Yanked vendor package
+//
+// Logline: Present in the vendor so add can refuse it by yank policy.
+//
+// Setup: Listed in registry/yank. Not for install.
+//
+// Beats:
+//   1. One function exists.
+//   2. Yank file names this version.
+//   3. No network.
+
+pub fn tooyank_ok() -> Bool {
+    return true;
+}

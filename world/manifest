@@ -6,3 +6,4 @@ payload=world.oo
 sha256=4b23f1b3227a7d15eb42f7e38d46c57fc26ba8619fe8dea1a4d9649e59182703
 sig=9fb963c064ebf74d73de7c016efd9482037df070a168e499b0d329a33963fcec
 outline=outline
+license=MIT

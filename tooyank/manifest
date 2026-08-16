@@ -1,0 +1,7 @@
+name=tooyank
+version=1.0.0
+deps=
+caps=FsRead
+payload=tooyank.oo
+sha256=66d85a23595028602e1229d25d56c357f07b7b629ec440ab668a9aeae8fcadf9
+license=MIT
