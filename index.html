@@ -6,6 +6,14 @@
   <title>openOODA store</title>
   <meta name="description" content="Search installable openOODA packages.">
   <link rel="icon" href="https://openooda.org/favicon.svg" type="image/svg+xml">
+  <meta property="og:title" content="openOODA store">
+  <meta property="og:description" content="Search installable openOODA packages.">
+  <meta property="og:url" content="https://registry.openooda.org/">
+  <meta property="og:image" content="https://openooda.org/og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <script>
     (function () {
       var m = document.cookie.match(/(?:^|; )ooda-theme=([^;]*)/);
@@ -70,13 +78,32 @@
     a { color: var(--fg); }
     a:hover { text-decoration-thickness: 2px; }
     #gh { position: fixed; right: 1rem; bottom: 1rem; z-index: 20; color: var(--fg); background: var(--bg); padding: 0.15rem 0.35rem; }
+    #skip {
+      position: absolute; left: 0.5rem; top: 0.5rem; z-index: 30;
+      background: var(--bg); color: var(--fg); padding: 0.15rem 0.45rem;
+      clip-path: inset(50%); width: 1px; height: 1px; overflow: hidden;
+    }
+    #skip:focus {
+      clip-path: none; width: auto; height: auto; overflow: visible;
+      outline: 2px solid var(--fg);
+    }
+    tr.hit { cursor: pointer; }
+    td.add { white-space: nowrap; }
     @media (max-width: 800px) {
       .wrap { grid-template-columns: 1fr; }
       aside { position: static; border-right: 0; border-bottom: 1px solid var(--fg); padding-bottom: 1rem; }
     }
+    @media print {
+      html, body { background: #fff; color: #000; }
+      #skip, #gh, #theme, header, aside, .copy, #q { display: none !important; }
+      .wrap { display: block; max-width: none; }
+      main { padding: 0; max-width: none; }
+      a { color: #000; }
+    }
   </style>
 </head>
 <body>
+  <a id="skip" href="https://openooda.org/guide/">guide</a>
   <a id="gh" href="https://github.com/openOODA">github</a>
   <header>
     <div class="brand-row">
@@ -96,17 +123,16 @@
     <main>
       <noscript>
         <p>Stock store. After checkout install: <code>ooda add NAME</code>.</p>
-        <pre>hello@1.0.0#16c3ceb221e5a2818b340a66796a4a9db0c8a65b5c7bf36aeef285ef160608ce#FsRead
-mid@1.0.0#006ee56e6f99f683f3a4398e9f64b2a9eb22356adb0436f711d9444b6abf6c07#FsRead
-world@1.0.0#4b23f1b3227a7d15eb42f7e38d46c57fc26ba8619fe8dea1a4d9649e59182703#FsRead</pre>
-        <p><code>ooda add hello</code></p>
+        <p><a href="hello/hello.oo">hello@1.0.0#16c3ceb221e5a2818b340a66796a4a9db0c8a65b5c7bf36aeef285ef160608ce#FsRead</a><br><code>ooda add hello</code></p>
+        <p><a href="mid/mid.oo">mid@1.0.0#006ee56e6f99f683f3a4398e9f64b2a9eb22356adb0436f711d9444b6abf6c07#FsRead</a><br><code>ooda add mid</code></p>
+        <p><a href="world/world.oo">world@1.0.0#4b23f1b3227a7d15eb42f7e38d46c57fc26ba8619fe8dea1a4d9649e59182703#FsRead</a><br><code>ooda add world</code></p>
         <p><a href="catalog">catalog</a></p>
       </noscript>
       <input id="q" type="search" placeholder="search" autocomplete="off" spellcheck="false">
       <p id="status">Loading…</p>
       <table id="hits" hidden>
         <thead>
-          <tr><th>lock</th><th>note</th><th></th></tr>
+          <tr><th>lock</th><th>add</th><th>note</th><th></th></tr>
         </thead>
         <tbody></tbody>
       </table>
@@ -115,8 +141,13 @@ world@1.0.0#4b23f1b3227a7d15eb42f7e38d46c57fc26ba8619fe8dea1a4d9649e59182703#FsR
   <script>
     (function () {
       var HIDE = { evilcap: true, tooyank: true };
+      var yankedNames = {};
       var rows = [];
+      var loaded = false;
       var q = document.getElementById("q");
+      if (q) q.value = (function () {
+        try { return new URL(location.href).searchParams.get("q") || ""; } catch (e) { return ""; }
+      })();
       var status = document.getElementById("status");
       var table = document.getElementById("hits");
       var body = table.querySelector("tbody");
@@ -165,7 +196,8 @@ world@1.0.0#4b23f1b3227a7d15eb42f7e38d46c57fc26ba8619fe8dea1a4d9649e59182703#FsR
             sha: sha,
             lock: name + "@" + ver + "#" + sha + "#" + caps,
             note: depLine(f[3] || ""),
-            cmd: "ooda add " + name
+            cmd: "ooda add " + name,
+            src: name + "/" + name + ".oo"
           });
         }
         return out;
@@ -190,6 +222,28 @@ world@1.0.0#4b23f1b3227a7d15eb42f7e38d46c57fc26ba8619fe8dea1a4d9649e59182703#FsR
         if (!s) return true;
         var hay = (row.name + " " + row.ver + " " + row.caps + " " + row.note + " " + row.sha + " " + row.lock).toLowerCase();
         return hay.indexOf(s.toLowerCase()) >= 0;
+      }
+
+      function queryFromUrl() {
+        var raw = "";
+        try { raw = new URL(location.href).searchParams.get("q") || ""; } catch (e) { raw = ""; }
+        return raw.replace(/^\s+|\s+$/g, "");
+      }
+
+      function writeQuery(s) {
+        var u;
+        try { u = new URL(location.href); } catch (e) { return; }
+        if (s) u.searchParams.set("q", s);
+        else u.searchParams.delete("q");
+        history.replaceState(null, "", u.pathname + u.search + u.hash);
+      }
+
+      function emptyLine(s) {
+        if (!rows.length) return "empty";
+        if (!s) return "empty";
+        var key = s.toLowerCase();
+        if (HIDE[key] || yankedNames[key]) return "yanked";
+        return "no match";
       }
 
       function copyText(text, btn) {
@@ -228,7 +282,7 @@ world@1.0.0#4b23f1b3227a7d15eb42f7e38d46c57fc26ba8619fe8dea1a4d9649e59182703#FsR
         body.innerHTML = "";
         if (!hits.length) {
           table.hidden = true;
-          note(rows.length ? "no match" : "Loading…");
+          note(loaded ? emptyLine(s) : "Loading…");
           return;
         }
         note("");
@@ -237,9 +291,19 @@ world@1.0.0#4b23f1b3227a7d15eb42f7e38d46c57fc26ba8619fe8dea1a4d9649e59182703#FsR
         while (i < hits.length) {
           var r = hits[i];
           var tr = document.createElement("tr");
+          tr.className = "hit";
+          tr.setAttribute("data-src", r.src);
           var tdL = document.createElement("td");
           tdL.className = "lock";
-          tdL.textContent = r.lock;
+          var a = document.createElement("a");
+          a.href = r.src;
+          a.textContent = r.lock;
+          tdL.appendChild(a);
+          var tdA = document.createElement("td");
+          tdA.className = "add";
+          var code = document.createElement("code");
+          code.textContent = r.cmd;
+          tdA.appendChild(code);
           var tdD = document.createElement("td");
           tdD.textContent = r.note;
           var tdB = document.createElement("td");
@@ -251,6 +315,7 @@ world@1.0.0#4b23f1b3227a7d15eb42f7e38d46c57fc26ba8619fe8dea1a4d9649e59182703#FsR
           btn.setAttribute("data-cmd", r.cmd);
           tdB.appendChild(btn);
           tr.appendChild(tdL);
+          tr.appendChild(tdA);
           tr.appendChild(tdD);
           tr.appendChild(tdB);
           body.appendChild(tr);
@@ -260,10 +325,21 @@ world@1.0.0#4b23f1b3227a7d15eb42f7e38d46c57fc26ba8619fe8dea1a4d9649e59182703#FsR
 
       body.addEventListener("click", function (ev) {
         var t = ev.target;
-        if (!t || t.className !== "copy") return;
-        copyText(t.getAttribute("data-cmd") || "", t);
+        if (!t) return;
+        if (t.classList && t.classList.contains("copy")) {
+          ev.preventDefault();
+          ev.stopPropagation();
+          copyText(t.getAttribute("data-cmd") || "", t);
+          return;
+        }
+        if (t.tagName === "A") return;
+        var tr = t.closest ? t.closest("tr.hit") : null;
+        if (tr && tr.getAttribute("data-src")) location.href = tr.getAttribute("data-src");
       });
-      q.addEventListener("input", draw);
+      q.addEventListener("input", function () {
+        writeQuery(q.value.replace(/^\s+|\s+$/g, ""));
+        draw();
+      });
 
       Promise.all([
         fetch("catalog", { cache: "no-cache" }).then(function (r) {
@@ -274,9 +350,13 @@ world@1.0.0#4b23f1b3227a7d15eb42f7e38d46c57fc26ba8619fe8dea1a4d9649e59182703#FsR
           return r.ok ? r.text() : "";
         }).catch(function () { return ""; })
       ]).then(function (pair) {
-        rows = parseCatalog(pair[0], parseYank(pair[1]));
+        yankedNames = parseYank(pair[1]);
+        rows = parseCatalog(pair[0], yankedNames);
+        loaded = true;
+        q.value = queryFromUrl();
         draw();
       }).catch(function () {
+        loaded = true;
         rows = [];
         table.hidden = true;
         note("Could not load catalog.");
