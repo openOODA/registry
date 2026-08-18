@@ -38,6 +38,15 @@
       font: inherit; background: var(--bg); color: var(--fg);
       border: 2px solid var(--fg); padding: 0.15rem 0.55rem; cursor: pointer; white-space: nowrap;
     }
+    .copy {
+      min-width: 6ch;
+      text-align: center;
+      box-sizing: content-box;
+    }
+    .copy.is-on {
+      background: var(--fg);
+      color: var(--bg);
+    }
     .wrap { display: grid; grid-template-columns: 12rem 1fr; max-width: 60rem; }
     aside {
       border-right: 1px solid var(--fg); padding: 1.25rem 1rem 5rem;
@@ -176,7 +185,10 @@
       }
 
       function copyText(text, btn) {
-        function ok() { btn.textContent = "copied"; }
+        function ok() {
+          btn.textContent = "copied";
+          btn.classList.add("is-on");
+        }
         function fallback() {
           var ta = document.createElement("textarea");
           ta.value = text;
