@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>openOODA registry</title>
-  <meta name="description" content="Static package catalog for ooda add --registry.">
+  <meta name="description" content="Stock store for ooda add and ooda search.">
   <link rel="icon" href="https://openooda.org/favicon.svg" type="image/svg+xml">
   <script>
     (function () {
@@ -126,8 +126,12 @@
     <a class="active" href="https://registry.openooda.org/">registry</a>
   </nav>
   <main>
-    <p>Static files. The client verifies <code>catalog</code> with minisign, then installs into CAS.</p>
-    <pre>ooda add hello --registry</pre>
+    <p>The stock store. <code>ooda add hello</code> installs from here. Search walks every store you added.</p>
+    <pre>ooda add hello
+ooda search hello
+ooda registry
+ooda registry add https://host
+ooda registry remove https://host</pre>
     <table>
       <tr><th>name</th><th>version</th><th>caps</th><th>note</th></tr>
       <tr><td>hello</td><td>1.0.0</td><td>FsRead</td><td>example; depends on mid</td></tr>

@@ -4,9 +4,11 @@ This tree is the file-backed vendor. HTTPS serves the same files at `https://reg
 
 Each directory is a package name with `manifest` (key=value) and a payload `.oo` file.
 `index` plus `index.sig` is the signed catalog. `yank` and `advisory` are local policy files.
-The product CLI does not fetch this host yet.
+The stock store is this origin. `ooda add hello` fetches it.
 
 Usage from `ooda/`:
 
-    ./bin/ooda add hello --vendor ../registry
+    ./bin/ooda add hello
+    ./bin/ooda search hello
+    ./bin/ooda registry
     ./bin/ooda pkg
