@@ -1,3 +1,4 @@
 *.secret.key
 *.sec
 .minisign/
+*.msrc
