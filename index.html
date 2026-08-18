@@ -6,6 +6,7 @@
   <title>openOODA registry</title>
   <meta name="description" content="Stock store for ooda add and ooda search.">
   <link rel="icon" href="https://openooda.org/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://openooda.org/site.css">
   <script>
     (function () {
       var m = document.cookie.match(/(?:^|; )ooda-theme=([^;]*)/);
@@ -13,99 +14,6 @@
       document.documentElement.setAttribute("data-theme", t);
     })();
   </script>
-  <style>
-    :root { --bg: #fff; --fg: #000; --muted: #444; --panel: #f2f2f2; }
-    html[data-theme="dark"] { --bg: #000; --fg: #e8e8e8; --muted: #9a9a9a; --panel: #141414; }
-    html { background: var(--bg); color: var(--fg); }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      font-size: 16px;
-      line-height: 1.5;
-    }
-    a { color: var(--fg); }
-    a:hover { text-decoration-thickness: 2px; }
-    header.chrome {
-      position: sticky; top: 0; z-index: 10;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 0.65rem 1rem;
-      padding: 0.42rem 0.65rem;
-      border-bottom: 2px solid var(--fg);
-      background: repeating-linear-gradient(
-        to bottom,
-        var(--fg) 0, var(--fg) 2px,
-        var(--bg) 2px, var(--bg) 4px
-      );
-    }
-    .title {
-      display: flex; align-items: center; gap: 0.45rem;
-      background: var(--bg);
-      padding: 0.1rem 0.28rem;
-      min-width: 0;
-    }
-    .close {
-      width: 0.78rem; height: 0.78rem;
-      border: 2px solid var(--fg);
-      background: var(--bg);
-      flex-shrink: 0;
-      display: block;
-      text-decoration: none;
-    }
-    .brand-row {
-      display: flex; align-items: baseline; gap: 0.45rem;
-      min-width: 0;
-      flex-wrap: wrap;
-    }
-    .brand {
-      font-weight: 700; letter-spacing: 0.08em;
-      color: var(--bg); background: var(--fg);
-      padding: 0.1rem 0.4rem;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-    .ver { color: var(--fg); font-size: 0.85rem; white-space: nowrap; }
-    #theme {
-      font: inherit;
-      background: var(--bg); color: var(--fg);
-      border: 2px solid var(--fg);
-      padding: 0.1rem 0.55rem;
-      cursor: pointer;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .menubar {
-      position: sticky; top: 2.45rem; z-index: 9;
-      display: flex; flex-wrap: wrap; gap: 0 1.35rem;
-      padding: 0.28rem 1.25rem;
-      border-bottom: 1px solid var(--fg);
-      background: var(--bg);
-    }
-    .menubar a { color: var(--fg); text-decoration: none; }
-    .menubar a.active { text-decoration: underline; text-decoration-thickness: 2px; }
-    main { padding: 1.5rem 1.25rem 5rem; max-width: 44rem; }
-    p { margin: 0 0 1.1rem; max-width: 38rem; }
-    pre {
-      margin: 0 0 1.15rem; padding: 0.55rem 0.7rem;
-      border: 1px solid var(--fg); overflow: auto; background: var(--panel);
-      max-width: 40rem;
-    }
-    code { font-family: inherit; background: var(--panel); padding: 0.05rem 0.25rem; }
-    pre code { background: none; padding: 0; }
-    table { border-collapse: collapse; width: 100%; max-width: 40rem; margin: 0 0 1.25rem; }
-    th, td { border: 1px solid var(--fg); padding: 0.3rem 0.5rem; text-align: left; }
-    th { color: var(--muted); font-weight: 400; }
-    #gh {
-      position: fixed; right: 1rem; bottom: 1rem; z-index: 20;
-      color: var(--fg); background: var(--bg);
-      padding: 0.15rem 0.35rem;
-      border: 1px solid var(--fg);
-    }
-    @media (max-width: 800px) {
-      .menubar { position: static; }
-      pre { font-size: 0.78rem; white-space: pre-wrap; overflow-wrap: anywhere; }
-    }
-  </style>
 </head>
 <body>
   <a id="gh" href="https://github.com/openOODA">github</a>
@@ -125,21 +33,32 @@
     <a href="https://openooda.org/research/">research</a>
     <a class="active" href="https://registry.openooda.org/">registry</a>
   </nav>
-  <main>
-    <p>The stock store. <code>ooda add hello</code> installs from here. Search walks every store you added.</p>
-    <pre>ooda add hello
+  <div class="wrap solo">
+    <main>
+      <p>The stock store. <code>ooda add hello</code> installs from here. <code>ooda search</code> walks every store you added.</p>
+
+      <div class="win">
+        <div class="win-bar"><span>store</span></div>
+        <pre>ooda add hello
 ooda search hello
 ooda registry
 ooda registry add https://host
 ooda registry remove https://host</pre>
-    <table>
-      <tr><th>name</th><th>version</th><th>caps</th><th>note</th></tr>
-      <tr><td>hello</td><td>1.0.0</td><td>FsRead</td><td>example; depends on mid</td></tr>
-      <tr><td>mid</td><td>1.0.0</td><td>FsRead</td><td>example; depends on world</td></tr>
-      <tr><td>world</td><td>1.0.0</td><td>FsRead</td><td>example leaf</td></tr>
-    </table>
-    <p>Raw catalog: <a href="catalog">catalog</a>. Signature: <a href="index.minisig">index.minisig</a>.</p>
-  </main>
+      </div>
+
+      <div class="win">
+        <div class="win-bar"><span>catalog</span></div>
+        <table>
+          <tr><th>name</th><th>version</th><th>caps</th><th>note</th></tr>
+          <tr><td>hello</td><td>1.0.0</td><td>FsRead</td><td>example; depends on mid</td></tr>
+          <tr><td>mid</td><td>1.0.0</td><td>FsRead</td><td>example; depends on world</td></tr>
+          <tr><td>world</td><td>1.0.0</td><td>FsRead</td><td>example leaf</td></tr>
+        </table>
+      </div>
+
+      <p>Raw catalog: <a href="catalog">catalog</a>. Signature: <a href="index.minisig">index.minisig</a>.</p>
+    </main>
+  </div>
   <script>
     (function () {
       var key = "ooda-theme";
