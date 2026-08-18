@@ -56,6 +56,7 @@
     table { border-collapse: collapse; width: 100%; max-width: 40rem; margin: 0 0 1.25rem; }
     th, td { border: 1px solid var(--fg); padding: 0.3rem 0.55rem; text-align: left; vertical-align: top; }
     th { color: var(--muted); font-weight: 400; }
+    td.lock { overflow-wrap: anywhere; word-break: break-all; }
     td.cmd { white-space: nowrap; }
     a { color: var(--fg); }
     a:hover { text-decoration-thickness: 2px; }
@@ -88,7 +89,7 @@
       <p id="status">Loading…</p>
       <table id="hits" hidden>
         <thead>
-          <tr><th>name</th><th>version</th><th>caps</th><th>note</th><th></th></tr>
+          <tr><th>lock</th><th>note</th><th></th></tr>
         </thead>
         <tbody></tbody>
       </table>
@@ -137,10 +138,15 @@
           if (!name) continue;
           if (HIDE[name]) continue;
           if (yanked[name]) continue;
+          var ver = f[1] || "";
+          var caps = f[2] || "";
+          var sha = f[4] || "";
           out.push({
             name: name,
-            ver: f[1] || "",
-            caps: f[2] || "",
+            ver: ver,
+            caps: caps,
+            sha: sha,
+            lock: name + "@" + ver + "#" + sha + "#" + caps,
             note: depLine(f[3] || ""),
             cmd: "ooda add " + name
           });
@@ -165,7 +171,7 @@
 
       function match(row, s) {
         if (!s) return true;
-        var hay = (row.name + " " + row.ver + " " + row.caps + " " + row.note).toLowerCase();
+        var hay = (row.name + " " + row.ver + " " + row.caps + " " + row.note + " " + row.sha + " " + row.lock).toLowerCase();
         return hay.indexOf(s.toLowerCase()) >= 0;
       }
 
@@ -211,12 +217,9 @@
         while (i < hits.length) {
           var r = hits[i];
           var tr = document.createElement("tr");
-          var tdN = document.createElement("td");
-          tdN.textContent = r.name;
-          var tdV = document.createElement("td");
-          tdV.textContent = r.ver;
-          var tdC = document.createElement("td");
-          tdC.textContent = r.caps;
+          var tdL = document.createElement("td");
+          tdL.className = "lock";
+          tdL.textContent = r.lock;
           var tdD = document.createElement("td");
           tdD.textContent = r.note;
           var tdB = document.createElement("td");
@@ -227,9 +230,7 @@
           btn.textContent = "copy";
           btn.setAttribute("data-cmd", r.cmd);
           tdB.appendChild(btn);
-          tr.appendChild(tdN);
-          tr.appendChild(tdV);
-          tr.appendChild(tdC);
+          tr.appendChild(tdL);
           tr.appendChild(tdD);
           tr.appendChild(tdB);
           body.appendChild(tr);
