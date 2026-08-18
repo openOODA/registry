@@ -147,16 +147,16 @@
     <main>
       <noscript>
         <p>Stock store. After checkout install: <code>ooda add NAME</code>.</p>
-        <p><a href="hello/hello.oo">hello@1.0.0#16c3ceb221e5a2818b340a66796a4a9db0c8a65b5c7bf36aeef285ef160608ce#FsRead</a><br><code>ooda add hello</code></p>
-        <p><a href="mid/mid.oo">mid@1.0.0#006ee56e6f99f683f3a4398e9f64b2a9eb22356adb0436f711d9444b6abf6c07#FsRead</a><br><code>ooda add mid</code></p>
-        <p><a href="world/world.oo">world@1.0.0#4b23f1b3227a7d15eb42f7e38d46c57fc26ba8619fe8dea1a4d9649e59182703#FsRead</a><br><code>ooda add world</code></p>
+        <p><a href="hello/hello.oo">hello@1.0.0#16c3ceb221e5a2818b340a66796a4a9db0c8a65b5c7bf36aeef285ef160608ce#FsRead</a><br><code>ooda add hello</code> pay=free</p>
+        <p><a href="mid/mid.oo">mid@1.0.0#006ee56e6f99f683f3a4398e9f64b2a9eb22356adb0436f711d9444b6abf6c07#FsRead</a><br><code>ooda add mid</code> pay=free</p>
+        <p><a href="world/world.oo">world@1.0.0#4b23f1b3227a7d15eb42f7e38d46c57fc26ba8619fe8dea1a4d9649e59182703#FsRead</a><br><code>ooda add world</code> pay=free</p>
         <p><a href="catalog">catalog</a></p>
       </noscript>
       <input id="q" type="search" placeholder="search" autocomplete="off" spellcheck="false">
       <p id="status">Loading…</p>
       <table id="hits" hidden>
         <thead>
-          <tr><th>lock</th><th>add</th><th>note</th><th></th></tr>
+          <tr><th>lock</th><th>add</th><th>note</th><th>pay</th><th></th></tr>
         </thead>
         <tbody></tbody>
       </table>
@@ -220,6 +220,7 @@
             sha: sha,
             lock: name + "@" + ver + "#" + sha + "#" + caps,
             note: depLine(f[3] || ""),
+            pay: "free",
             cmd: "ooda add " + name,
             src: name + "/" + name + ".oo"
           });
@@ -244,7 +245,7 @@
 
       function match(row, s) {
         if (!s) return true;
-        var hay = (row.name + " " + row.ver + " " + row.caps + " " + row.note + " " + row.sha + " " + row.lock).toLowerCase();
+        var hay = (row.name + " " + row.ver + " " + row.caps + " " + row.note + " " + row.sha + " " + row.lock + " " + (row.pay || "")).toLowerCase();
         return hay.indexOf(s.toLowerCase()) >= 0;
       }
 
@@ -330,6 +331,9 @@
           tdA.appendChild(code);
           var tdD = document.createElement("td");
           tdD.textContent = r.note;
+          var tdP = document.createElement("td");
+          tdP.className = "pay";
+          tdP.textContent = r.pay || "free";
           var tdB = document.createElement("td");
           tdB.className = "cmd";
           var btn = document.createElement("button");
@@ -341,6 +345,7 @@
           tr.appendChild(tdL);
           tr.appendChild(tdA);
           tr.appendChild(tdD);
+          tr.appendChild(tdP);
           tr.appendChild(tdB);
           body.appendChild(tr);
           i = i + 1;
@@ -376,9 +381,29 @@
       ]).then(function (pair) {
         yankedNames = parseYank(pair[1]);
         rows = parseCatalog(pair[0], yankedNames);
-        loaded = true;
-        q.value = queryFromUrl();
-        draw();
+        return Promise.all(rows.map(function (row) {
+          return fetch(row.name + "/manifest", { cache: "no-cache" }).then(function (r) {
+            return r.ok ? r.text() : "";
+          }).catch(function () { return ""; }).then(function (text) {
+            var pay = "free";
+            var lines = (text || "").split("\n");
+            var j = 0;
+            while (j < lines.length) {
+              var line = lines[j];
+              var eq = line.indexOf("=");
+              if (eq > 0 && line.slice(0, eq) === "pay") {
+                pay = line.slice(eq + 1);
+              }
+              j = j + 1;
+            }
+            if (!pay) pay = "free";
+            row.pay = pay;
+          });
+        })).then(function () {
+          loaded = true;
+          q.value = queryFromUrl();
+          draw();
+        });
       }).catch(function () {
         loaded = true;
         rows = [];

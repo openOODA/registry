@@ -3,6 +3,9 @@
 This tree is the file-backed vendor. HTTPS serves the same files at `https://registry.openooda.org`. `index.minisig` is minisign of `index`. `index.sig` is leftover HMAC for local `--vendor`.
 
 Each directory is a package name with `manifest` (key=value) and a payload `.oo` file.
+Optional pay fields on the manifest: `pay=free|tip|required`, `payTo=`, `amount=`, `network=`, `asset=`.
+Those are the author's address, not the site's. Missing `pay` means free.
+`ooda add` still downloads. It may print that a price is listed. It does not charge.
 `index` plus `index.sig` is the signed catalog. `yank` and `advisory` are local policy files.
 The stock store is this origin. The human page searches `/catalog`.
 `ooda add hello` fetches the same file.
