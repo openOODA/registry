@@ -14,6 +14,9 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <script>
     (function () {
       var m = document.cookie.match(/(?:^|; )ooda-theme=([^;]*)/);
@@ -27,7 +30,7 @@
     html { background: var(--bg); color: var(--fg); }
     body {
       margin: 0;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
       font-size: 16px;
       line-height: 1.5;
     }
@@ -90,32 +93,59 @@
     tr.hit { cursor: pointer; }
     td.add { white-space: nowrap; }
     @media (max-width: 800px) {
-      .wrap { grid-template-columns: 1fr; }
-      aside { position: static; border-right: 0; border-bottom: 1px solid var(--fg); padding-bottom: 1rem; }
+      body { font-size: 14.5px; }
+      header { padding: 0.75rem 1rem; }
+      .wrap { grid-template-columns: 1fr; width: 100%; }
+      aside {
+        position: static;
+        border-right: 0;
+        border-bottom: 1px solid var(--fg);
+        padding: 0.65rem 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem 1rem;
+      }
+      .global {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1.25rem;
+      }
+      .global a {
+        display: inline-block;
+        padding: 0.25rem 0;
+        min-height: auto;
+      }
       #gh {
-        position: static; display: block;
-        margin-top: 0.75rem; padding: 0.75rem 0 0;
-        border-top: 1px solid var(--fg);
+        position: static;
+        display: inline-block;
+        margin-top: 0;
+        padding: 0.25rem 0;
+        border-top: 0;
       }
       #theme, .copy {
         min-height: 44px; padding: 0.55rem 0.85rem; box-sizing: border-box;
       }
-      .global a {
-        min-height: 44px; padding-top: 0.65rem; padding-bottom: 0.65rem; box-sizing: border-box;
-      }
-      #q { min-height: 44px; padding: 0.55rem 0.45rem; }
+      #q { min-height: 44px; padding: 0.55rem 0.65rem; }
       table, thead, tbody, th, td, tr { display: block; }
       thead { display: none; }
       table { max-width: none; }
       tr.hit {
         border: 1px solid var(--fg);
         margin: 0 0 0.75rem;
-        padding: 0.35rem 0;
+        padding: 0.5rem 0.65rem;
       }
-      th, td { border: 0; }
+      th, td { border: 0; padding: 0.25rem 0; }
       td.add, td.cmd { white-space: normal; }
-      td.cmd { padding-top: 0.5rem; }
-      main { padding-bottom: 1.5rem; }
+      td.cmd { padding-top: 0.4rem; }
+      main { padding: 1.25rem 1rem; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 13.5px; }
+      header { padding: 0.65rem 0.85rem; }
+      main { padding: 1rem 0.85rem; }
+      aside { flex-direction: column; align-items: flex-start; gap: 0.5rem; padding: 0.65rem 0.85rem; }
     }
     @media print {
       html, body { background: #fff; color: #000; }
@@ -131,7 +161,7 @@
   <header>
     <div class="brand-row">
       <a class="brand" href="https://openooda.org/">openOODA</a>
-      <span class="ver">v0.205.0-beta</span>
+      <span class="ver">v0.207.0</span>
     </div>
     <button type="button" id="theme">dark</button>
   </header>
